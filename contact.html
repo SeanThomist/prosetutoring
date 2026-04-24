@@ -34,8 +34,7 @@
       <h1>Contact</h1>
       <p>Either use the form below, or email sean@prosetutoring.org
 
-      <!-- TODO: to receive these submissions, replace this form's JS handler with a real service (Formspree, Netlify Forms, Resend, etc.). The current handler logs to the console and shows a thank-you message. -->
-      <form id="contactForm" novalidate>
+      <form id="contactForm" action="https://formspree.io/f/mnjlwdaq" method="POST">
         <label>
           Name
           <input type="text" name="name" required autocomplete="name">
@@ -77,10 +76,17 @@
 
     document.getElementById('contactForm').addEventListener('submit', function (e) {
       e.preventDefault();
-      const data = Object.fromEntries(new FormData(this).entries());
-      console.log('Contact form submission:', data); // TODO: replace with a real email service
-      this.hidden = true;
-      document.getElementById('formSuccess').hidden = false;
+      var form = this;
+      fetch('https://formspree.io/f/mnjlwdaq', {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      }).then(function (res) {
+        if (res.ok) {
+          form.hidden = true;
+          document.getElementById('formSuccess').hidden = false;
+        }
+      });
     });
   </script>
 </body>
